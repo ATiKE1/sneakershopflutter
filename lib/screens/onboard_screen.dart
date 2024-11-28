@@ -1,150 +1,157 @@
 import 'package:flutter/material.dart';
-import '../styles/color_palette.dart' as pallete;
+import '../styles/color_palette.dart' as palette;
 
 class OnBoardScreen extends StatefulWidget {
   const OnBoardScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _OnBoardScreenState createState() => _OnBoardScreenState();
+  State<OnBoardScreen> createState() => _OnBoardScreenState();
 }
 
 class _OnBoardScreenState extends State<OnBoardScreen> {
-  final List<LoaderQueue> queue = [
-    LoaderQueue('https://i.imgur.com/XmFHUX0.png', 'ДОБРО ПОЖАЛОВАТЬ', ''),
-    LoaderQueue('https://i.imgur.com/lpTsbEV.png', 'Начнем путешествие',
-        'Умная, великолепная и модная коллекция Изучите сейчас'),
-    LoaderQueue('https://i.imgur.com/nCGQlLd.png', 'У Вас Есть Сила, Чтобы',
-        'В вашей комнате много красивых и привлекательных растений'),
+  final List<OnboardingData> pages = [
+    OnboardingData(
+      'https://i.imgur.com/XmFHUX0.png',
+      'ДОБРО\nПОЖАЛОВАТЬ',
+      '',
+    ),
+    OnboardingData(
+      'https://i.imgur.com/lpTsbEV.png',
+      'Начнем\nпутешествие',
+      'Умная, великолепная и модная коллекция\nИзучите сейчас',
+    ),
+    OnboardingData(
+      'https://i.imgur.com/nCGQlLd.png',
+      'У Вас Есть Сила,\nЧтобы',
+      'В вашей комнате много красивых и\nпривлекательных растений',
+    ),
   ];
 
-  int currentIndex = 0;
-  bool isFirstPage = true;
+  int currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
     double cWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-        body: Container(
-      padding: const EdgeInsets.all(16.0),
-      width: cWidth,
-      decoration: const BoxDecoration(
+      body: Container(
+        padding: const EdgeInsets.all(16.0),
+        width: cWidth,
+        //width: double.infinity,
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-            Color(0xFF48B2E7),
-            Color(0xFF44A9DC),
-            Color(0xFF2B6B8B)
-          ])),
-      child: Center(
-          child: isFirstPage
-              ? Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Flexible(
-                      child: Text(
-                    queue[currentIndex].header,
-                    style: const TextStyle(color: Colors.white, fontSize: 30),
-                  )),
-                  const SizedBox(height: 130),
-                  Image.network(queue[currentIndex].imgLink),
-                  const SizedBox(height: 26),
-                  PageIndicators(
-                    count: queue.length,
-                    currentPage: currentIndex,
-                  ),
-                  const SizedBox(height: 130),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 25, horizontal: 160),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        if (currentIndex != queue.length - 1) {
-                          currentIndex++;
-                          isFirstPage = false;
-                        }
-                      });
-                    },
-                    child: const Text(
-                      'Начать',
-                      style: TextStyle(color: Colors.black),
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF48B2E7),
+              Color(0xFF44A9DC),
+              Color(0xFF2B6B8B),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              children: [
+                const Spacer(),
+                if (pages[currentPage].description.isEmpty) ...[
+                  Text(
+                    pages[currentPage].title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 34,
+                      color: Colors.white,
                     ),
                   ),
-                ])
-              : Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Image.network(queue[currentIndex].imgLink),
                   const SizedBox(height: 60),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      queue[currentIndex].header,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 34, color: Colors.white),
+                ],
+                Image.network(
+                  pages[currentPage].imageUrl,
+                  height: 375,
+                ),
+                if (pages[currentPage].description.isNotEmpty) ...[
+                  const SizedBox(height: 16),
+                  Text(
+                    pages[currentPage].title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 34,
+                      color: Colors.white,
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      queue[currentIndex].description,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontSize: 16, color: pallete.subTextLight),
+                  const SizedBox(height: 16),
+                  Text(
+                    pages[currentPage].description,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: palette.subTextLight,
                     ),
                   ),
-                  const SizedBox(height: 40),
-                  PageIndicators(
-                    count: queue.length,
-                    currentPage: currentIndex,
-                  ),
-                  const SizedBox(height: 130),
-                  ElevatedButton(
+                ],
+                const SizedBox(height: 48),
+                PageIndicator(
+                  count: pages.length,
+                  currentPage: currentPage,
+                ),
+                const Spacer(),
+                SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (currentPage < pages.length - 1) {
+                        setState(() {
+                          currentPage++;
+                        });
+                      } else {
+                        Navigator.pushReplacementNamed(context, '/home');
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 25, horizontal: 160),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onPressed: () {
-                      setState(() {
-                        if (currentIndex != queue.length - 1) {
-                          currentIndex++;
-                        } else {
-                          Navigator.pushReplacementNamed(context, '/home');
-                        }
-                      });
-                    },
-                    child: const Text(
-                      'Далее',
-                      style: TextStyle(color: Colors.black),
+                    child: Text(
+                      currentPage == 0 ? 'Начать' : 'Далее',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
-                ])),
-    ));
+                ),
+                const SizedBox(height: 32),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
-class LoaderQueue {
-  final String imgLink;
-  final String header;
+class OnboardingData {
+  final String imageUrl;
+  final String title;
   final String description;
 
-  LoaderQueue(this.imgLink, this.header, this.description);
+  OnboardingData(this.imageUrl, this.title, this.description);
 }
 
-class PageIndicators extends StatelessWidget {
+class PageIndicator extends StatelessWidget {
   final int count;
   final int currentPage;
 
-  const PageIndicators(
-      {super.key, required this.count, required this.currentPage});
+  const PageIndicator({
+    super.key,
+    required this.count,
+    required this.currentPage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -157,9 +164,8 @@ class PageIndicators extends StatelessWidget {
           width: 43,
           height: 5,
           decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
-            color: currentPage == index ? Colors.white : pallete.disable,
+            borderRadius: BorderRadius.circular(3),
+            color: currentPage == index ? Colors.white : palette.disable,
           ),
         ),
       ),

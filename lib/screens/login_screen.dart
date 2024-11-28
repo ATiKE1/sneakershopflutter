@@ -12,6 +12,16 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _obscureText = true;
 
+  final emailInputController = TextEditingController();
+  final passwordInputController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailInputController.dispose();
+    passwordInputController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double cWidth = MediaQuery.of(context).size.width;
@@ -22,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.all(16.0),
         width: cWidth,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -57,6 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 10),
               TextField(
+                controller: emailInputController,
                 decoration: InputDecoration(
                   hintText: 'xyz@gmail.com',
                   filled: true,
@@ -75,6 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 10),
               TextField(
                 obscureText: _obscureText,
+                controller: passwordInputController,
                 decoration: InputDecoration(
                   hintText: '********',
                   filled: true,
@@ -95,15 +107,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 5),
               Align(
                 alignment: Alignment.centerRight,
-                child: TextButton(
+                child: GestureDetector(
                   child: const Text(
                     'Восстановить',
-                    style: TextStyle(color: pallete.subTextDark),
+                    style: TextStyle(color: pallete.subTextDark, fontSize: 14),
                   ),
-                  onPressed: () {
-                    // Handle password recovery
+                  onTap: () {
+                    // Handle create user
                   },
                 ),
               ),
@@ -117,7 +130,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/home');
+                  if (RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      .hasMatch(emailInputController.text)) {
+                    Navigator.pushReplacementNamed(context, '/home');
+                  }
                 },
                 child: const Text(
                   'Войти',
@@ -125,26 +142,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Вы впервые? ',
-                      style: TextStyle(color: Colors.grey[600], fontSize: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Вы впервые? ',
+                    style: TextStyle(color: Colors.grey[600], fontSize: 16),
+                  ),
+                  GestureDetector(
+                    child: const Text(
+                      'Создать пользователя',
+                      style: TextStyle(color: Colors.black, fontSize: 16),
                     ),
-                    GestureDetector(
-                      child: const Text(
-                        'Создать пользователя',
-                        style: TextStyle(color: Colors.black, fontSize: 16),
-                      ),
-                      onTap: () {
-                        // Handle create user
-                      },
-                    ),
-                  ],
-                ),
+                    onTap: () {
+                      // Handle create user
+                    },
+                  ),
+                ],
               )
             ],
           ),

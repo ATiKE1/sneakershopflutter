@@ -19,12 +19,12 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.all(16.0),
         width: cWidth,
         child: const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Align(
-              alignment: Alignment.center,
-              child: Text('Home'),
+              alignment: Alignment.bottomLeft,
+              child: Text('Здесь могла быть ваша реклама'),
             )
           ],
         ),
