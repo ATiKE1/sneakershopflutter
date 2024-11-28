@@ -130,9 +130,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 onPressed: () {
-                  if (RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                      .hasMatch(emailInputController.text)) {
+                  if (RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(emailInputController.text) &&
+                      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                          .hasMatch(passwordInputController.text)) {
                     Navigator.pushReplacementNamed(context, '/home');
                   }
                 },
