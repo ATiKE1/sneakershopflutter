@@ -142,28 +142,27 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Вы впервые? ',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 16),
-                  ),
-                  GestureDetector(
-                    child: const Text(
-                      'Создать пользователя',
-                      style: TextStyle(color: Colors.black, fontSize: 16),
-                    ),
-                    onTap: () {
-                      // Handle create user
-                    },
-                  ),
-                ],
-              )
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Вы впервые? ',
+            style: TextStyle(color: Colors.grey[600], fontSize: 16),
+          ),
+          GestureDetector(
+            child: const Text(
+              'Создать пользователя',
+              style: TextStyle(color: Colors.black, fontSize: 16),
+            ),
+            onTap: () {
+              // Handle create user
+            },
+          ),
+        ],
       ),
     );
   }

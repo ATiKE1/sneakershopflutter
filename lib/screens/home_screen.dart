@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../widgets/search_widget.dart';
+import '../widgets/appbar_widget.dart';
+import '../widgets/categories_widget.dart';
+import '../widgets/bottom_nav_bar_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,22 +15,23 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    double cWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
-        padding: const EdgeInsets.all(16.0),
-        width: cWidth,
-        child: const Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Text('Здесь могла быть ваша реклама'),
-            )
-          ],
+      appBar: buildAppBar(),
+      bottomNavigationBar: buildBottomNavBar(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                buildSearchBar(),
+                const SizedBox(height: 20),
+                buildCategories(),
+              ],
+            ),
+          ),
         ),
       ),
     );

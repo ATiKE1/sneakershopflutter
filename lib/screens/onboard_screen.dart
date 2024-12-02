@@ -31,13 +31,8 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double cWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.all(16.0),
-        width: cWidth,
-        //width: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -50,84 +45,118 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
           ),
         ),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: [
-                const Spacer(),
-                if (pages[currentPage].description.isEmpty) ...[
-                  Text(
-                    pages[currentPage].title,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 34,
-                      color: Colors.white,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: constraints.maxWidth * 0.06),
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(),
                     ),
-                  ),
-                  const SizedBox(height: 60),
-                ],
-                Image.network(
-                  pages[currentPage].imageUrl,
-                  height: 375,
-                ),
-                if (pages[currentPage].description.isNotEmpty) ...[
-                  const SizedBox(height: 16),
-                  Text(
-                    pages[currentPage].title,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 34,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    pages[currentPage].description,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: palette.subTextLight,
-                    ),
-                  ),
-                ],
-                const SizedBox(height: 48),
-                PageIndicator(
-                  count: pages.length,
-                  currentPage: currentPage,
-                ),
-                const Spacer(),
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (currentPage < pages.length - 1) {
-                        setState(() {
-                          currentPage++;
-                        });
-                      } else {
-                        Navigator.pushReplacementNamed(context, '/home');
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                    if (pages[currentPage].description.isEmpty) ...[
+                      Expanded(
+                        flex: 2,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            pages[currentPage].title,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 34,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                    Expanded(
+                      flex: 5,
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Image.network(
+                          pages[currentPage].imageUrl,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
-                    child: Text(
-                      currentPage == 0 ? 'Начать' : 'Далее',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                    if (pages[currentPage].description.isNotEmpty) ...[
+                      Expanded(
+                        flex: 2,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            pages[currentPage].title,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 34,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            pages[currentPage].description,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: palette.subTextLight,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                    Expanded(
+                      flex: 1,
+                      child: PageIndicator(
+                        count: pages.length,
+                        currentPage: currentPage,
                       ),
                     ),
-                  ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: constraints.maxHeight * 0.07,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (currentPage < pages.length - 1) {
+                            setState(() {
+                              currentPage++;
+                            });
+                          } else {
+                            Navigator.pushReplacementNamed(context, '/home');
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Text(
+                          currentPage == 0 ? 'Начать' : 'Далее',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: constraints.maxHeight * 0.04),
+                  ],
                 ),
-                const SizedBox(height: 32),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),
