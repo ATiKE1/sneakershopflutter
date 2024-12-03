@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 buildSearchBar(),
                 const SizedBox(height: 20),
-                buildCategories(),
+                const CategoriesWidget(),
               ],
             ),
           ),
